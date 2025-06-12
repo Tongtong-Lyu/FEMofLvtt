@@ -69,6 +69,8 @@ void OutputQ4Elements(unsigned int EleGrp);
 //!	Print total system data
 	void OutputTotalSystemData();
 
+	void OutputVTKFile(const string& filename);
+
 //! Overload the operator <<
 	template <typename T>
 	COutputter& operator<<(const T& item) 

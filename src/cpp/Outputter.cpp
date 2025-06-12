@@ -256,6 +256,7 @@ void COutputter::OutputNodalDisplacement()
 	*this << endl;
 }
 
+
 //	Calculate stresses
 void COutputter::OutputElementStress()
 {
@@ -423,6 +424,145 @@ void COutputter::PrintStiffnessMatrix()
 
 	*this << endl;
 }
+
+void COutputter::OutputVTKFile(const string& filename)
+{
+	CDomain* FEMData = CDomain::GetInstance();
+
+	ofstream vtkFile(filename);
+
+	if (!vtkFile)
+	{
+		cerr << "*** Error *** Cannot open VTK file: " << filename << endl;
+		return;
+	}
+
+	vtkFile << "# vtk DataFile Version 3.0\n";
+	vtkFile << "STAP++ Q4 patch output\n";
+	vtkFile << "ASCII\n";
+	vtkFile << "DATASET UNSTRUCTURED_GRID\n";
+
+	// Write points
+	CNode* NodeList = FEMData->GetNodeList();
+	unsigned int NUMNP = FEMData->GetNUMNP();
+
+	vtkFile << "POINTS " << NUMNP << " float\n";
+
+	for (unsigned int np = 0; np < NUMNP; np++)
+	{
+		vtkFile << NodeList[np].XYZ[0] << " "
+			<< NodeList[np].XYZ[1] << " "
+			<< 0.0 << "\n";
+	}
+
+	// Write cells
+	unsigned int NUMEG = FEMData->GetNUMEG();
+	unsigned int total_cells = 0;
+	for (unsigned int EleGrpIndex = 0; EleGrpIndex < NUMEG; EleGrpIndex++)
+	{
+		total_cells += FEMData->GetEleGrpList()[EleGrpIndex].GetNUME();
+	}
+
+	vtkFile << "CELLS " << total_cells << " " << total_cells * 5 << "\n";
+
+	for (unsigned int EleGrpIndex = 0; EleGrpIndex < NUMEG; EleGrpIndex++)
+	{
+		CElementGroup& EleGrp = FEMData->GetEleGrpList()[EleGrpIndex];
+		unsigned int NUME = EleGrp.GetNUME();
+
+		for (unsigned int Ele = 0; Ele < NUME; Ele++)
+		{
+			CElement& Element = EleGrp[Ele];
+			CNode** nodes = Element.GetNodes();
+
+			vtkFile << "4 "
+				<< nodes[0]->NodeNumber - 1 << " "
+				<< nodes[1]->NodeNumber - 1 << " "
+				<< nodes[2]->NodeNumber - 1 << " "
+				<< nodes[3]->NodeNumber - 1 << "\n";
+		}
+	}
+
+	// Write cell types (VTK_QUAD = 9)
+	vtkFile << "CELL_TYPES " << total_cells << "\n";
+	for (unsigned int i = 0; i < total_cells; i++)
+	{
+		vtkFile << "9\n";
+	}
+
+	// Write point data (displacement)
+	double* Displacement = FEMData->GetDisplacement();
+
+	vtkFile << "POINT_DATA " << NUMNP << "\n";
+	vtkFile << "VECTORS displacement float\n";
+
+	for (unsigned int np = 0; np < NUMNP; np++)
+	{
+		double u = (NodeList[np].bcode[0] == 0) ? 0.0 : Displacement[NodeList[np].bcode[0] - 1];
+		double v = (NodeList[np].bcode[1] == 0) ? 0.0 : Displacement[NodeList[np].bcode[1] - 1];
+
+		vtkFile << u << " " << v << " " << 0.0 << "\n";
+	}
+
+	// Write cell data (stress)
+	vtkFile << "CELL_DATA " << total_cells << "\n";
+	vtkFile << "SCALARS sigma_x float 1\n";
+	vtkFile << "LOOKUP_TABLE default\n";
+
+	for (unsigned int EleGrpIndex = 0; EleGrpIndex < NUMEG; EleGrpIndex++)
+	{
+		CElementGroup& EleGrp = FEMData->GetEleGrpList()[EleGrpIndex];
+		unsigned int NUME = EleGrp.GetNUME();
+		ElementTypes ElementType = EleGrp.GetElementType();
+
+		for (unsigned int Ele = 0; Ele < NUME; Ele++)
+		{
+			CElement& Element = EleGrp[Ele];
+			double stress[3];
+			Element.ElementStress(stress, FEMData->GetDisplacement());
+			vtkFile << stress[0] << "\n"; // Sigma-x
+		}
+	}
+
+	vtkFile << "SCALARS sigma_y float 1\n";
+	vtkFile << "LOOKUP_TABLE default\n";
+
+	for (unsigned int EleGrpIndex = 0; EleGrpIndex < NUMEG; EleGrpIndex++)
+	{
+		CElementGroup& EleGrp = FEMData->GetEleGrpList()[EleGrpIndex];
+		unsigned int NUME = EleGrp.GetNUME();
+
+		for (unsigned int Ele = 0; Ele < NUME; Ele++)
+		{
+			CElement& Element = EleGrp[Ele];
+			double stress[3];
+			Element.ElementStress(stress, FEMData->GetDisplacement());
+			vtkFile << stress[1] << "\n"; // Sigma-y
+		}
+	}
+
+	vtkFile << "SCALARS tau_xy float 1\n";
+	vtkFile << "LOOKUP_TABLE default\n";
+
+	for (unsigned int EleGrpIndex = 0; EleGrpIndex < NUMEG; EleGrpIndex++)
+	{
+		CElementGroup& EleGrp = FEMData->GetEleGrpList()[EleGrpIndex];
+		unsigned int NUME = EleGrp.GetNUME();
+
+		for (unsigned int Ele = 0; Ele < NUME; Ele++)
+		{
+			CElement& Element = EleGrp[Ele];
+			double stress[3];
+			Element.ElementStress(stress, FEMData->GetDisplacement());
+			vtkFile << stress[2] << "\n"; // Tau-xy
+		}
+	}
+
+	vtkFile.close();
+
+	cout << "*** VTK file written to " << filename << endl;
+}
+
 
 //	Print displacement vector for debuging
 void COutputter::PrintDisplacement()

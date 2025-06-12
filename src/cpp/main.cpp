@@ -102,6 +102,8 @@ int main(int argc, char *argv[])
 //      Calculate and output stresses of all elements
         Output->OutputElementStress();
     }
+    Output->OutputVTKFile("q4_patch.vtk");
+
 
     double time_solution = timer.ElapsedTime();
     
