@@ -12,6 +12,5 @@
 
 ## Q4 Example
 
-修改了STAPpp的内容，使其可以处理Q4单元，其中“data/q4_patch. dat”中提供了一个简单的四边形测试。构建后
-使用CMake，结果将写入data/q4_patch. out。
-同时进行了分片实验和收敛性测试。
+修改了STAPpp的内容，使其可以处理Q4单元，其中“q4_patch. dat”中提供了一个简单的四边形测试。
+使用CMake，同时进行了分片实验和收敛性测试。
