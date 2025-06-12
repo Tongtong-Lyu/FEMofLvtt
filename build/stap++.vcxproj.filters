@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\Files\FEMSoftwares\STAPpp-master\src\cpp\Bar.cpp">
+      <Filter>SOURCE FILES</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Files\FEMSoftwares\STAPpp-master\src\cpp\Clock.cpp">
+      <Filter>SOURCE FILES</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Files\FEMSoftwares\STAPpp-master\src\cpp\Domain.cpp">
+      <Filter>SOURCE FILES</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Files\FEMSoftwares\STAPpp-master\src\cpp\ElementGroup.cpp">
+      <Filter>SOURCE FILES</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Files\FEMSoftwares\STAPpp-master\src\cpp\LoadCaseData.cpp">
+      <Filter>SOURCE FILES</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Files\FEMSoftwares\STAPpp-master\src\cpp\Material.cpp">
+      <Filter>SOURCE FILES</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Files\FEMSoftwares\STAPpp-master\src\cpp\Node.cpp">
+      <Filter>SOURCE FILES</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Files\FEMSoftwares\STAPpp-master\src\cpp\Outputter.cpp">
+      <Filter>SOURCE FILES</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Files\FEMSoftwares\STAPpp-master\src\cpp\Q4.cpp">
+      <Filter>SOURCE FILES</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Files\FEMSoftwares\STAPpp-master\src\cpp\Solver.cpp">
+      <Filter>SOURCE FILES</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Files\FEMSoftwares\STAPpp-master\src\cpp\main.cpp">
+      <Filter>SOURCE FILES</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\Files\FEMSoftwares\STAPpp-master\src\h\Bar.h">
+      <Filter>HEADER FILES</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Files\FEMSoftwares\STAPpp-master\src\h\Clock.h">
+      <Filter>HEADER FILES</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Files\FEMSoftwares\STAPpp-master\src\h\Domain.h">
+      <Filter>HEADER FILES</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Files\FEMSoftwares\STAPpp-master\src\h\Element.h">
+      <Filter>HEADER FILES</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Files\FEMSoftwares\STAPpp-master\src\h\ElementGroup.h">
+      <Filter>HEADER FILES</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Files\FEMSoftwares\STAPpp-master\src\h\LoadCaseData.h">
+      <Filter>HEADER FILES</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Files\FEMSoftwares\STAPpp-master\src\h\Material.h">
+      <Filter>HEADER FILES</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Files\FEMSoftwares\STAPpp-master\src\h\Node.h">
+      <Filter>HEADER FILES</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Files\FEMSoftwares\STAPpp-master\src\h\Outputter.h">
+      <Filter>HEADER FILES</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Files\FEMSoftwares\STAPpp-master\src\h\Q4.h">
+      <Filter>HEADER FILES</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Files\FEMSoftwares\STAPpp-master\src\h\SkylineMatrix.h">
+      <Filter>HEADER FILES</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Files\FEMSoftwares\STAPpp-master\src\h\Solver.h">
+      <Filter>HEADER FILES</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Files\FEMSoftwares\STAPpp-master\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="HEADER FILES">
+      <UniqueIdentifier>{0C6466C5-94ED-32FE-80EC-55B832A306A5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SOURCE FILES">
+      <UniqueIdentifier>{FE488AC3-3D10-35BB-B1ED-D693A347FFD9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+^D:\FILES\FEMSOFTWARES\STAPPP-MASTER\BUILD\CMAKEFILES\AF0FE1C8C19C0C7CEB28CDDD66A1F049\GENERATE.STAMP.RULE
+setlocal
+G:\CMmake\bin\cmake.exe -SD:/Files/FEMSoftwares/STAPpp-master/src -BD:/Files/FEMSoftwares/STAPpp-master/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/Files/FEMSoftwares/STAPpp-master/build/stap++.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
