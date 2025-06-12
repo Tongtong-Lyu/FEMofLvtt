@@ -12,5 +12,5 @@
 
 ## Q4 Example
 
-修改了STAPpp的内容，使其可以处理Q4单元，其中“q4_patch. dat”中提供了一个简单的四边形测试。
-使用CMake，同时进行了分片实验和收敛性测试。
+修改了STAPpp的内容，使其可以处理Q4单元，其中“q4_patch. dat”中提供了一个简单的四边形测试,输出结果为“q4_patch.out”,同时将其转化为可以被ParaView识别的文件“q4_patch.out”“q4_patch.vtk”，便于进行可视化分析
+使用CMake，

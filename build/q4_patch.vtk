@@ -1,0 +1,29 @@
+# vtk DataFile Version 3.0
+STAP++ Q4 patch output
+ASCII
+DATASET UNSTRUCTURED_GRID
+POINTS 4 float
+0 0 0
+1 0 0
+1 1 0
+0 1 0
+CELLS 1 5
+4 0 1 2 3
+CELL_TYPES 1
+9
+POINT_DATA 4
+VECTORS displacement float
+0 0.000181688 0
+0.00106078 0 0
+-0.0010325 -0.001475 0
+0 -0.00129113 0
+CELL_DATA 1
+SCALARS sigma_x float 1
+LOOKUP_TABLE default
+-0.470364
+SCALARS sigma_y float 1
+LOOKUP_TABLE default
+-1.61502
+SCALARS tau_xy float 1
+LOOKUP_TABLE default
+-0.472851
