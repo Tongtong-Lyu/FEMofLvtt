@@ -62,10 +62,7 @@ void CElementGroup::CalculateMemberSize()
         case ElementTypes::UNDEFINED:
             std::cerr << "Setting element type to UNDEFINED." << std::endl;
             exit(5);
-        case ElementTypes::Bar:
-            ElementSize_ = sizeof(CBar);
-            MaterialSize_ = sizeof(CBarMaterial);
-            break;
+       
         case ElementTypes::Q4:
             ElementSize_ = sizeof(CQ4);
             MaterialSize_ = sizeof(CQ4Material);
@@ -82,9 +79,7 @@ void CElementGroup::AllocateElements(std::size_t size)
 {
     switch(ElementType_)
     {
-        case ElementTypes::Bar:
-            ElementList_ = new CBar[size];
-            break;
+       
         case ElementTypes::Q4:
             ElementList_ = new CQ4[size];
             break;
@@ -99,9 +94,7 @@ void CElementGroup::AllocateMaterials(std::size_t size)
 {
     switch(ElementType_)
     {
-        case ElementTypes::Bar:
-            MaterialList_ = new CBarMaterial[size];
-            break;
+        
         case ElementTypes::Q4:
             MaterialList_ = new CQ4Material[size];
             break;

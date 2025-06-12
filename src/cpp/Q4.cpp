@@ -9,7 +9,7 @@ CQ4::CQ4()
 {
     NEN_ = 4;
     nodes_ = new CNode * [NEN_];
-    ND_ = 12; // 4 nodes * 3 dofs per node
+    ND_ = 8; // 4 nodes * 2 dofs per node
     LocationMatrix_ = new unsigned int[ND_];
     ElementMaterial_ = nullptr;
 }
@@ -63,9 +63,9 @@ static void ShapeDerivs(double xi, double eta, double dNdxi[4], double dNdeta[4]
 void CQ4::ElementStiffness(double* Matrix)
 {
     // zero matrix (upper triangular storage later)
-    double full[12][12];
-    for (int i = 0; i < 12; i++)
-        for (int j = 0; j < 12; j++)
+    double full[8][8];
+    for (int i = 0; i < 8; i++)
+        for (int j = 0; j < 8; j++)
             full[i][j] = 0.0;
 
     CQ4Material* mat = dynamic_cast<CQ4Material*>(ElementMaterial_);
@@ -136,16 +136,16 @@ void CQ4::ElementStiffness(double* Matrix)
                         k[i][j] += BtD[i][m] * B[m][j];
                     k[i][j] *= detJ * t * 1.0; // weight =1 for each gp
                 }
-            // accumulate into full matrix with DOF map
+            // accumulate into element stiffness matrix
             int map[8] = { 0,1,3,4,6,7,9,10 };
             for (int i = 0; i < 8; i++)
                 for (int j = 0; j < 8; j++)
-                    full[map[i]][map[j]] += k[i][j];
+                    full[i][j] += k[i][j];
         }
 
     // copy to upper triangular packed storage
     int index = 0;
-    for (int j = 0; j < 12; j++) {
+    for (int j = 0; j < 8; j++) {
         for (int i = 0; i <= j; i++) {
             Matrix[index++] = full[i][j];
         }
@@ -191,10 +191,9 @@ void CQ4::ElementStress(double* stress, double* Displacement)
         B[2][2 * a + 1] = dNdx;
     }
 
-    int map[8] = { 0,1,3,4,6,7,9,10 };
     double u[8];
     for (int i = 0; i < 8; i++) {
-        int lm = LocationMatrix_[map[i]];
+        int lm = LocationMatrix_[i];
         u[i] = (lm == 0) ? 0.0 : Displacement[lm - 1];
     }
     double strain[3] = { 0,0,0 };

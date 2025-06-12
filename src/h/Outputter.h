@@ -53,9 +53,6 @@ public:
 //!	Output element data
 	void OutputElementInfo();
 
-//!	Output bar element data
-	void OutputBarElements(unsigned int EleGrp);
-
 //!     Output Q4 element data
 void OutputQ4Elements(unsigned int EleGrp);
 

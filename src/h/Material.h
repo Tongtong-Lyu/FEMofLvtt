@@ -37,21 +37,7 @@ public:
 
 };
 
-//!	Material class for bar element
-class CBarMaterial : public CMaterial
-{
-public:
 
-	double Area;	//!< Sectional area of a bar element
-
-public:
-	
-//!	Read material data from stream Input
-	virtual bool Read(ifstream& Input);
-
-//!	Write material data to Stream
-	virtual void Write(COutputter& output);
-};
 //! Material class for 4 node quadrilateral element
 class CQ4Material : public CMaterial
 {

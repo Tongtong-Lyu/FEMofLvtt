@@ -158,9 +158,6 @@ void COutputter::OutputElementInfo()
 
 		switch (ElementType)
 		{
-		case ElementTypes::Bar: // Bar element
-			OutputBarElements(EleGrp);
-			break;
 		case ElementTypes::Q4:
 			OutputQ4Elements(EleGrp);
 			break;
@@ -169,50 +166,6 @@ void COutputter::OutputElementInfo()
 			break;
 		}
 	}
-}
-//	Output bar element data
-void COutputter::OutputBarElements(unsigned int EleGrp)
-{
-	CDomain* FEMData = CDomain::GetInstance();
-
-	CElementGroup& ElementGroup = FEMData->GetEleGrpList()[EleGrp];
-	unsigned int NUMMAT = ElementGroup.GetNUMMAT();
-
-	*this << " M A T E R I A L   D E F I N I T I O N" << endl
-		  << endl;
-	*this << " NUMBER OF DIFFERENT SETS OF MATERIAL" << endl;
-	*this << " AND CROSS-SECTIONAL  CONSTANTS  . . . .( NPAR(3) ) . . =" << setw(5) << NUMMAT
-		  << endl
-		  << endl;
-
-	*this << "  SET       YOUNG'S     CROSS-SECTIONAL" << endl
-		  << " NUMBER     MODULUS          AREA" << endl
-		  << "               E              A" << endl;
-
-	*this << setiosflags(ios::scientific) << setprecision(5);
-
-	//	Loop over for all property sets
-	for (unsigned int mset = 0; mset < NUMMAT; mset++)
-    {
-        *this << setw(5) << mset+1;
-		ElementGroup.GetMaterial(mset).Write(*this);
-    }
-
-	*this << endl << endl
-		  << " E L E M E N T   I N F O R M A T I O N" << endl;
-    
-	*this << " ELEMENT     NODE     NODE       MATERIAL" << endl
-		  << " NUMBER-N      I        J       SET NUMBER" << endl;
-
-	unsigned int NUME = ElementGroup.GetNUME();
-
-	//	Loop over for all elements in group EleGrp
-	for (unsigned int Ele = 0; Ele < NUME; Ele++)
-    {
-        *this << setw(5) << Ele+1;
-		ElementGroup[Ele].Write(*this);
-    }
-
 }
 
 //      Output Q4 element data
@@ -295,7 +248,7 @@ void COutputter::OutputNodalDisplacement()
 
 	*this << " D I S P L A C E M E N T S" << endl
 		  << endl;
-	*this << "  NODE           X-DISPLACEMENT    Y-DISPLACEMENT    Z-DISPLACEMENT" << endl;
+	*this << "  NODE           X-DISPLACEMENT    Y-DISPLACEMENT    " << endl;
 
 	for (unsigned int np = 0; np < FEMData->GetNUMNP(); np++)
 		NodeList[np].WriteNodalDisplacement(*this, Displacement);
@@ -324,26 +277,7 @@ void COutputter::OutputElementStress()
 
 		switch (ElementType)
 		{
-		case ElementTypes::Bar: // Bar element
-			*this << "  ELEMENT             FORCE            STRESS" << endl
-				<< "  NUMBER" << endl;
-
-
-				double stress;
-
-				for (unsigned int Ele = 0; Ele < NUME; Ele++)
-				{
-					CElement& Element = EleGrp[Ele];
-					Element.ElementStress(&stress, Displacement);
-
-					CBarMaterial& material = *dynamic_cast<CBarMaterial*>(Element.GetElementMaterial());
-					*this << setw(5) << Ele + 1 << setw(22) << stress * material.Area << setw(18)
-						<< stress << endl;
-				}
-
-				*this << endl;
-
-				break;
+		
 
 		case ElementTypes::Q4:
 			*this << "  ELEMENT       SIGMA-X       SIGMA-Y         TAU-XY" << endl;
