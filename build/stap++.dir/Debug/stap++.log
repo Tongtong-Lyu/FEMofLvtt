@@ -1,30 +1,33 @@
-﻿  Domain.cpp
-D:\Files\FEMSoftwares\STAPpp-master\src\h\Element.h(78,24): warning C4018: “<=”: 有符号/无符号不匹配
+﻿  Building Custom Rule D:/Files/STAPpp-master/src/CMakeLists.txt
+  Bar.cpp
+D:\Files\STAPpp-master\src\h\Element.h(78,24): warning C4018: “<=”: 有符号/无符号不匹配
+  (编译源文件“../src/cpp/Bar.cpp”)
+  
+  Clock.cpp
+  Domain.cpp
+D:\Files\STAPpp-master\src\h\Element.h(78,24): warning C4018: “<=”: 有符号/无符号不匹配
   (编译源文件“../src/cpp/Domain.cpp”)
   
-D:\Files\FEMSoftwares\STAPpp-master\src\cpp\Domain.cpp(224,28): warning C4018: “<”: 有符号/无符号不匹配
   ElementGroup.cpp
-D:\Files\FEMSoftwares\STAPpp-master\src\h\Element.h(78,24): warning C4018: “<=”: 有符号/无符号不匹配
+D:\Files\STAPpp-master\src\h\Element.h(78,24): warning C4018: “<=”: 有符号/无符号不匹配
   (编译源文件“../src/cpp/ElementGroup.cpp”)
   
   LoadCaseData.cpp
   Material.cpp
   Node.cpp
   Outputter.cpp
-D:\Files\FEMSoftwares\STAPpp-master\src\h\Element.h(78,24): warning C4018: “<=”: 有符号/无符号不匹配
+D:\Files\STAPpp-master\src\h\Element.h(78,24): warning C4018: “<=”: 有符号/无符号不匹配
   (编译源文件“../src/cpp/Outputter.cpp”)
   
-D:\Files\FEMSoftwares\STAPpp-master\src\cpp\Outputter.cpp(68,13): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-D:\Files\FEMSoftwares\STAPpp-master\src\cpp\Outputter.cpp(405,20): warning C4018: “<=”: 有符号/无符号不匹配
-D:\Files\FEMSoftwares\STAPpp-master\src\cpp\Outputter.cpp(407,21): warning C4018: “<=”: 有符号/无符号不匹配
+D:\Files\STAPpp-master\src\cpp\Outputter.cpp(68,13): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   Q4.cpp
-D:\Files\FEMSoftwares\STAPpp-master\src\h\Element.h(78,24): warning C4018: “<=”: 有符号/无符号不匹配
+D:\Files\STAPpp-master\src\h\Element.h(78,24): warning C4018: “<=”: 有符号/无符号不匹配
   (编译源文件“../src/cpp/Q4.cpp”)
   
   Solver.cpp
   main.cpp
-D:\Files\FEMSoftwares\STAPpp-master\src\h\Element.h(78,24): warning C4018: “<=”: 有符号/无符号不匹配
+D:\Files\STAPpp-master\src\h\Element.h(78,24): warning C4018: “<=”: 有符号/无符号不匹配
   (编译源文件“../src/cpp/main.cpp”)
   
   正在生成代码...
-  stap++.vcxproj -> D:\Files\FEMSoftwares\STAPpp-master\build\Debug\stap++.exe
+  stap++.vcxproj -> D:\Files\STAPpp-master\build\Debug\stap++.exe

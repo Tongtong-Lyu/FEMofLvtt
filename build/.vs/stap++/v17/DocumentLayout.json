@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\Files\\FEMSoftwares\\STAPpp-master\\build\\",
+  "WorkspaceRootPath": "D:\\Files\\STAPpp-master\\build\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{74669516-6882-3332-B80A-00D8B7C21945}|stap\u002B\u002B.vcxproj|D:\\Files\\FEMSoftwares\\STAPpp-master\\src\\cpp\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{D64DDBD2-6527-3EF0-87BF-CE8F043CACEB}|stap\u002B\u002B.vcxproj|D:\\Files\\STAPpp-master\\src\\cpp\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,13 +23,13 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "main.cpp",
-              "DocumentMoniker": "D:\\Files\\FEMSoftwares\\STAPpp-master\\src\\cpp\\main.cpp",
+              "DocumentMoniker": "D:\\Files\\STAPpp-master\\src\\cpp\\main.cpp",
               "RelativeDocumentMoniker": "..\\src\\cpp\\main.cpp",
-              "ToolTip": "D:\\Files\\FEMSoftwares\\STAPpp-master\\src\\cpp\\main.cpp",
+              "ToolTip": "D:\\Files\\STAPpp-master\\src\\cpp\\main.cpp",
               "RelativeToolTip": "..\\src\\cpp\\main.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-06-12T15:24:54.995Z",
+              "WhenOpened": "2025-06-15T08:01:20.083Z",
               "EditorCaption": ""
             }
           ]

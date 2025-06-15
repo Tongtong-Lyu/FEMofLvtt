@@ -53,9 +53,10 @@ public:
 //!	Output element data
 	void OutputElementInfo();
 
-//!     Output Q4 element data
+//!	Output bar element data
+	void OutputBarElements(unsigned int EleGrp);
+//Q4
 void OutputQ4Elements(unsigned int EleGrp);
-
 
 //!	Output load data 
 	void OutputLoadInfo(); 
@@ -68,8 +69,6 @@ void OutputQ4Elements(unsigned int EleGrp);
 
 //!	Print total system data
 	void OutputTotalSystemData();
-
-	void OutputVTKFile(const string& filename);
 
 //! Overload the operator <<
 	template <typename T>

@@ -10,7 +10,7 @@
 
 #include "ElementGroup.h"
 #include "Domain.h"
-#include "Q4.h"
+
 CNode* CElementGroup::NodeList_ = nullptr;
 
 //! Constructor
@@ -62,11 +62,14 @@ void CElementGroup::CalculateMemberSize()
         case ElementTypes::UNDEFINED:
             std::cerr << "Setting element type to UNDEFINED." << std::endl;
             exit(5);
-       
+        case ElementTypes::Bar:
+            ElementSize_ = sizeof(CBar);
+            MaterialSize_ = sizeof(CBarMaterial);
+            break;
         case ElementTypes::Q4:
             ElementSize_ = sizeof(CQ4);
             MaterialSize_ = sizeof(CQ4Material);
-            break;
+            break;//Q4
         default:
             std::cerr << "Type " << ElementType_ << " not available. See CElementGroup::CalculateMemberSize." << std::endl;
             exit(5);
@@ -79,10 +82,12 @@ void CElementGroup::AllocateElements(std::size_t size)
 {
     switch(ElementType_)
     {
-       
+        case ElementTypes::Bar:
+            ElementList_ = new CBar[size];
+            break;
         case ElementTypes::Q4:
             ElementList_ = new CQ4[size];
-            break;
+            break;//Q4
         default:
             std::cerr << "Type " << ElementType_ << " not available. See CElementGroup::AllocateElement." << std::endl;
             exit(5);
@@ -94,10 +99,12 @@ void CElementGroup::AllocateMaterials(std::size_t size)
 {
     switch(ElementType_)
     {
-        
+        case ElementTypes::Bar:
+            MaterialList_ = new CBarMaterial[size];
+            break;
         case ElementTypes::Q4:
             MaterialList_ = new CQ4Material[size];
-            break;
+            break;//Q4
         default:
             std::cerr << "Type " << ElementType_ << " not available. See CElementGroup::AllocateMaterial." << std::endl;
             exit(5);

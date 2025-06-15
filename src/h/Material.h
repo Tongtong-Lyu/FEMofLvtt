@@ -37,14 +37,28 @@ public:
 
 };
 
+//!	Material class for bar element
+class CBarMaterial : public CMaterial
+{
+public:
 
-//! Material class for 4 node quadrilateral element
+	double Area;	//!< Sectional area of a bar element
+
+public:
+	
+//!	Read material data from stream Input
+	virtual bool Read(ifstream& Input);
+
+//!	Write material data to Stream
+	virtual void Write(COutputter& output);
+};
+//! Material class for 4-node plane element
 class CQ4Material : public CMaterial
 {
 public:
-	double Nu;       //!< Poisson ratio
+	double nu;      //!< Poisson's ratio
 	double thickness; //!< Element thickness
 
-	virtual bool Read(ifstream& Input);
-	virtual void Write(COutputter& output);
-};
+	virtual bool Read(ifstream& Input) override;
+	virtual void Write(COutputter& output) override;
+};//Q4

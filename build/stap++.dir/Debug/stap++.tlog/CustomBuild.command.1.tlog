@@ -1,6 +1,6 @@
-^D:\FILES\FEMSOFTWARES\STAPPP-MASTER\SRC\CMAKELISTS.TXT
+^D:\FILES\STAPPP-MASTER\SRC\CMAKELISTS.TXT
 setlocal
-G:\CMmake\bin\cmake.exe -SD:/Files/FEMSoftwares/STAPpp-master/src -BD:/Files/FEMSoftwares/STAPpp-master/build --check-stamp-file D:/Files/FEMSoftwares/STAPpp-master/build/CMakeFiles/generate.stamp
+G:\CMmake\bin\cmake.exe -SD:/Files/STAPpp-master/src -BD:/Files/STAPpp-master/build --check-stamp-file D:/Files/STAPpp-master/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone

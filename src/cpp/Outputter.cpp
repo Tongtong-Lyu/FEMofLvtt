@@ -158,18 +158,65 @@ void COutputter::OutputElementInfo()
 
 		switch (ElementType)
 		{
+		case ElementTypes::Bar: // Bar element
+			OutputBarElements(EleGrp);
+			break;
 		case ElementTypes::Q4:
 			OutputQ4Elements(EleGrp);
-			break;
+			break;//Q4
 		default:
 			*this << ElementType << " has not been implemented yet." << endl;
 			break;
 		}
 	}
 }
+//	Output bar element data
+void COutputter::OutputBarElements(unsigned int EleGrp)
+{
+	CDomain* FEMData = CDomain::GetInstance();
 
-//      Output Q4 element data
-void COutputter::OutputQ4Elements(unsigned int EleGrp)
+	CElementGroup& ElementGroup = FEMData->GetEleGrpList()[EleGrp];
+	unsigned int NUMMAT = ElementGroup.GetNUMMAT();
+
+	*this << " M A T E R I A L   D E F I N I T I O N" << endl
+		  << endl;
+	*this << " NUMBER OF DIFFERENT SETS OF MATERIAL" << endl;
+	*this << " AND CROSS-SECTIONAL  CONSTANTS  . . . .( NPAR(3) ) . . =" << setw(5) << NUMMAT
+		  << endl
+		  << endl;
+
+	*this << "  SET       YOUNG'S     CROSS-SECTIONAL" << endl
+		  << " NUMBER     MODULUS          AREA" << endl
+		  << "               E              A" << endl;
+
+	*this << setiosflags(ios::scientific) << setprecision(5);
+
+	//	Loop over for all property sets
+	for (unsigned int mset = 0; mset < NUMMAT; mset++)
+    {
+        *this << setw(5) << mset+1;
+		ElementGroup.GetMaterial(mset).Write(*this);
+    }
+
+	*this << endl << endl
+		  << " E L E M E N T   I N F O R M A T I O N" << endl;
+    
+	*this << " ELEMENT     NODE     NODE       MATERIAL" << endl
+		  << " NUMBER-N      I        J       SET NUMBER" << endl;
+
+	unsigned int NUME = ElementGroup.GetNUME();
+
+	//	Loop over for all elements in group EleGrp
+	for (unsigned int Ele = 0; Ele < NUME; Ele++)
+    {
+        *this << setw(5) << Ele+1;
+		ElementGroup[Ele].Write(*this);
+    }
+
+	*this << endl;
+}
+
+void COutputter::OutputQ4Elements(unsigned int EleGrp)//Q4
 {
 	CDomain* FEMData = CDomain::GetInstance();
 
@@ -179,12 +226,12 @@ void COutputter::OutputQ4Elements(unsigned int EleGrp)
 	*this << " M A T E R I A L   D E F I N I T I O N" << endl
 		<< endl;
 	*this << " NUMBER OF DIFFERENT SETS OF MATERIAL" << endl;
-	*this << " AND CONSTANTS  . . . .( NPAR(3) ) . . =" << setw(5) << NUMMAT
+	*this << " AND THICKNESS CONSTANTS . . . .( NPAR(3) ) . . =" << setw(5) << NUMMAT
 		<< endl
 		<< endl;
 
-	*this << "  SET       YOUNG'S        POISSON" << endl
-		<< " NUMBER     MODULUS          RATIO      THICK" << endl
+	*this << "  SET       YOUNG'S       POISSON      THICKNESS" << endl
+		<< " NUMBER     MODULUS        RATIO" << endl
 		<< "               E              NU            T" << endl;
 
 	*this << setiosflags(ios::scientific) << setprecision(5);
@@ -198,8 +245,8 @@ void COutputter::OutputQ4Elements(unsigned int EleGrp)
 	*this << endl << endl
 		<< " E L E M E N T   I N F O R M A T I O N" << endl;
 
-	*this << " ELEMENT     NODE     NODE     NODE     NODE     MATERIAL" << endl
-		<< " NUMBER-N      1        2        3        4   SET NUMBER" << endl;
+	*this << " ELEMENT     NODE     NODE     NODE     NODE       MATERIAL" << endl
+		<< " NUMBER     I        J        K        L       SET NUMBER" << endl;
 
 	unsigned int NUME = ElementGroup.GetNUME();
 
@@ -248,14 +295,13 @@ void COutputter::OutputNodalDisplacement()
 
 	*this << " D I S P L A C E M E N T S" << endl
 		  << endl;
-	*this << "  NODE           X-DISPLACEMENT    Y-DISPLACEMENT    " << endl;
+	*this << "  NODE           X-DISPLACEMENT    Y-DISPLACEMENT    Z-DISPLACEMENT" << endl;
 
 	for (unsigned int np = 0; np < FEMData->GetNUMNP(); np++)
 		NodeList[np].WriteNodalDisplacement(*this, Displacement);
 
 	*this << endl;
 }
-
 
 //	Calculate stresses
 void COutputter::OutputElementStress()
@@ -278,23 +324,36 @@ void COutputter::OutputElementStress()
 
 		switch (ElementType)
 		{
-		
+			case ElementTypes::Bar: // Bar element
+				*this << "  ELEMENT             FORCE            STRESS" << endl
+					<< "  NUMBER" << endl;
 
-		case ElementTypes::Q4:
-			*this << "  ELEMENT       SIGMA-X       SIGMA-Y         TAU-XY" << endl;
+				double stress;
 
-			for (unsigned int Ele = 0; Ele < NUME; Ele++)
-			{
-				CElement& Element = EleGrp[Ele];
-				double stress[3];
-				Element.ElementStress(stress, Displacement);
-				*this << setw(5) << Ele + 1 << setw(15) << stress[0]
-					<< setw(15) << stress[1] << setw(15) << stress[2] << endl;
-			}
+				for (unsigned int Ele = 0; Ele < NUME; Ele++)
+				{
+					CElement& Element = EleGrp[Ele];
+					Element.ElementStress(&stress, Displacement);
 
-			*this << endl;
+					CBarMaterial& material = *dynamic_cast<CBarMaterial*>(Element.GetElementMaterial());
+					*this << setw(5) << Ele + 1 << setw(22) << stress * material.Area << setw(18)
+						<< stress << endl;
+				}
 
-			break;
+				*this << endl;
+
+				break;
+			case ElementTypes::Q4:
+				*this << "  ELEMENT          SIGMA-XX        SIGMA-YY         TAU-XY" << endl;
+				double q4stress[3];
+				for (unsigned int Ele = 0; Ele < NUME; Ele++)
+				{
+					CElement& Element = EleGrp[Ele];
+					Element.ElementStress(q4stress, Displacement);
+					*this << setw(5) << Ele + 1 << setw(18) << q4stress[0] << setw(18) << q4stress[1] << setw(18) << q4stress[2] << endl;
+				}
+				*this << endl;
+				break;//Q4
 
 			default: // Invalid element type
 				cerr << "*** Error *** Elment type " << ElementType
@@ -424,145 +483,6 @@ void COutputter::PrintStiffnessMatrix()
 
 	*this << endl;
 }
-
-void COutputter::OutputVTKFile(const string& filename)
-{
-	CDomain* FEMData = CDomain::GetInstance();
-
-	ofstream vtkFile(filename);
-
-	if (!vtkFile)
-	{
-		cerr << "*** Error *** Cannot open VTK file: " << filename << endl;
-		return;
-	}
-
-	vtkFile << "# vtk DataFile Version 3.0\n";
-	vtkFile << "STAP++ Q4 patch output\n";
-	vtkFile << "ASCII\n";
-	vtkFile << "DATASET UNSTRUCTURED_GRID\n";
-
-	// Write points
-	CNode* NodeList = FEMData->GetNodeList();
-	unsigned int NUMNP = FEMData->GetNUMNP();
-
-	vtkFile << "POINTS " << NUMNP << " float\n";
-
-	for (unsigned int np = 0; np < NUMNP; np++)
-	{
-		vtkFile << NodeList[np].XYZ[0] << " "
-			<< NodeList[np].XYZ[1] << " "
-			<< 0.0 << "\n";
-	}
-
-	// Write cells
-	unsigned int NUMEG = FEMData->GetNUMEG();
-	unsigned int total_cells = 0;
-	for (unsigned int EleGrpIndex = 0; EleGrpIndex < NUMEG; EleGrpIndex++)
-	{
-		total_cells += FEMData->GetEleGrpList()[EleGrpIndex].GetNUME();
-	}
-
-	vtkFile << "CELLS " << total_cells << " " << total_cells * 5 << "\n";
-
-	for (unsigned int EleGrpIndex = 0; EleGrpIndex < NUMEG; EleGrpIndex++)
-	{
-		CElementGroup& EleGrp = FEMData->GetEleGrpList()[EleGrpIndex];
-		unsigned int NUME = EleGrp.GetNUME();
-
-		for (unsigned int Ele = 0; Ele < NUME; Ele++)
-		{
-			CElement& Element = EleGrp[Ele];
-			CNode** nodes = Element.GetNodes();
-
-			vtkFile << "4 "
-				<< nodes[0]->NodeNumber - 1 << " "
-				<< nodes[1]->NodeNumber - 1 << " "
-				<< nodes[2]->NodeNumber - 1 << " "
-				<< nodes[3]->NodeNumber - 1 << "\n";
-		}
-	}
-
-	// Write cell types (VTK_QUAD = 9)
-	vtkFile << "CELL_TYPES " << total_cells << "\n";
-	for (unsigned int i = 0; i < total_cells; i++)
-	{
-		vtkFile << "9\n";
-	}
-
-	// Write point data (displacement)
-	double* Displacement = FEMData->GetDisplacement();
-
-	vtkFile << "POINT_DATA " << NUMNP << "\n";
-	vtkFile << "VECTORS displacement float\n";
-
-	for (unsigned int np = 0; np < NUMNP; np++)
-	{
-		double u = (NodeList[np].bcode[0] == 0) ? 0.0 : Displacement[NodeList[np].bcode[0] - 1];
-		double v = (NodeList[np].bcode[1] == 0) ? 0.0 : Displacement[NodeList[np].bcode[1] - 1];
-
-		vtkFile << u << " " << v << " " << 0.0 << "\n";
-	}
-
-	// Write cell data (stress)
-	vtkFile << "CELL_DATA " << total_cells << "\n";
-	vtkFile << "SCALARS sigma_x float 1\n";
-	vtkFile << "LOOKUP_TABLE default\n";
-
-	for (unsigned int EleGrpIndex = 0; EleGrpIndex < NUMEG; EleGrpIndex++)
-	{
-		CElementGroup& EleGrp = FEMData->GetEleGrpList()[EleGrpIndex];
-		unsigned int NUME = EleGrp.GetNUME();
-		ElementTypes ElementType = EleGrp.GetElementType();
-
-		for (unsigned int Ele = 0; Ele < NUME; Ele++)
-		{
-			CElement& Element = EleGrp[Ele];
-			double stress[3];
-			Element.ElementStress(stress, FEMData->GetDisplacement());
-			vtkFile << stress[0] << "\n"; // Sigma-x
-		}
-	}
-
-	vtkFile << "SCALARS sigma_y float 1\n";
-	vtkFile << "LOOKUP_TABLE default\n";
-
-	for (unsigned int EleGrpIndex = 0; EleGrpIndex < NUMEG; EleGrpIndex++)
-	{
-		CElementGroup& EleGrp = FEMData->GetEleGrpList()[EleGrpIndex];
-		unsigned int NUME = EleGrp.GetNUME();
-
-		for (unsigned int Ele = 0; Ele < NUME; Ele++)
-		{
-			CElement& Element = EleGrp[Ele];
-			double stress[3];
-			Element.ElementStress(stress, FEMData->GetDisplacement());
-			vtkFile << stress[1] << "\n"; // Sigma-y
-		}
-	}
-
-	vtkFile << "SCALARS tau_xy float 1\n";
-	vtkFile << "LOOKUP_TABLE default\n";
-
-	for (unsigned int EleGrpIndex = 0; EleGrpIndex < NUMEG; EleGrpIndex++)
-	{
-		CElementGroup& EleGrp = FEMData->GetEleGrpList()[EleGrpIndex];
-		unsigned int NUME = EleGrp.GetNUME();
-
-		for (unsigned int Ele = 0; Ele < NUME; Ele++)
-		{
-			CElement& Element = EleGrp[Ele];
-			double stress[3];
-			Element.ElementStress(stress, FEMData->GetDisplacement());
-			vtkFile << stress[2] << "\n"; // Tau-xy
-		}
-	}
-
-	vtkFile.close();
-
-	cout << "*** VTK file written to " << filename << endl;
-}
-
 
 //	Print displacement vector for debuging
 void COutputter::PrintDisplacement()

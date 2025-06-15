@@ -1,23 +1,17 @@
 #pragma once
-
 #include "Element.h"
 
-//! 4 node quadrilateral element (plane stress/strain)
+//! 4-node quadrilateral plane element
 class CQ4 : public CElement
 {
 public:
     CQ4();
-    ~CQ4();
+    ~CQ4() = default;
 
-    //! Read element data from stream Input
-    virtual bool Read(ifstream& Input, CMaterial* MaterialSets, CNode* NodeList);
+    bool Read(ifstream& Input, CMaterial* MaterialSets, CNode* NodeList) override;
+    void Write(COutputter& output) override;
+    void ElementStiffness(double* Matrix) override;
+    void ElementStress(double* stress, double* Displacement) override;
 
-    //! Write element data to stream
-    virtual void Write(COutputter& output);
-
-    //! Calculate element stiffness matrix
-    virtual void ElementStiffness(double* Matrix);
-
-    //! Calculate element stress at the element center
-    virtual void ElementStress(double* stress, double* Displacement);
+    void GenerateLocationMatrix() override;
 };
