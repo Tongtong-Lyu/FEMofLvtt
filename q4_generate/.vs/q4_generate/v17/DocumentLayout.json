@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Files\\HWofFEM\\q4_generate\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{488A66CA-A83F-4FD6-B245-95D9179E63BB}|q4_generate\\q4_generate.vcxproj|D:\\Files\\HWofFEM\\q4_generate\\q4_generate\\q4_generate.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{488A66CA-A83F-4FD6-B245-95D9179E63BB}|q4_generate\\q4_generate.vcxproj|solutionrelative:q4_generate\\q4_generate.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "q4_generate.cpp",
+              "DocumentMoniker": "D:\\Files\\HWofFEM\\q4_generate\\q4_generate\\q4_generate.cpp",
+              "RelativeDocumentMoniker": "q4_generate\\q4_generate.cpp",
+              "ToolTip": "D:\\Files\\HWofFEM\\q4_generate\\q4_generate\\q4_generate.cpp",
+              "RelativeToolTip": "q4_generate\\q4_generate.cpp",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAAAGYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-06-15T09:08:05.542Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
