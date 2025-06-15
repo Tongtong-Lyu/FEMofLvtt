@@ -362,6 +362,115 @@ void COutputter::OutputElementStress()
 	}
 }
 
+void COutputter::OutputVTK(const std::string& file, unsigned int lcase)//将.out文件转化为.vtk文件
+{
+	CDomain* FEMData = CDomain::GetInstance();
+	(void)lcase;
+
+	CNode* NodeList = FEMData->GetNodeList();
+	unsigned int NUMNP = FEMData->GetNUMNP();
+	unsigned int NUMEG = FEMData->GetNUMEG();
+	double* Displacement = FEMData->GetDisplacement();
+
+	ofstream fout(file);
+	if (!fout)
+	{
+		cerr << "*** Error *** Cannot open VTK file " << file << endl;
+		return;
+	}
+
+	fout << "# vtk DataFile Version 3.0\n";
+	fout << "STAP++ results\n";
+	fout << "ASCII\n";
+	fout << "DATASET UNSTRUCTURED_GRID\n";
+
+	fout << "POINTS " << NUMNP << " float\n";
+	for (unsigned int i = 0; i < NUMNP; i++)
+	{
+		fout << NodeList[i].XYZ[0] << " " << NodeList[i].XYZ[1] << " " << NodeList[i].XYZ[2] << "\n";
+	}
+
+	unsigned int numCells = 0;
+	unsigned int connSize = 0;
+	for (unsigned int grp = 0; grp < NUMEG; ++grp)
+	{
+		CElementGroup& EleGrp = FEMData->GetEleGrpList()[grp];
+		unsigned int NUME = EleGrp.GetNUME();
+		ElementTypes type = EleGrp.GetElementType();
+		unsigned int nodes = (type == ElementTypes::Bar) ? 2 : (type == ElementTypes::Q4 ? 4 : 0);
+		numCells += NUME;
+		connSize += NUME * (nodes + 1);
+	}
+
+	fout << "CELLS " << numCells << " " << connSize << "\n";
+	for (unsigned int grp = 0; grp < NUMEG; ++grp)
+	{
+		CElementGroup& EleGrp = FEMData->GetEleGrpList()[grp];
+		unsigned int NUME = EleGrp.GetNUME();
+		ElementTypes type = EleGrp.GetElementType();
+		unsigned int nodes = (type == ElementTypes::Bar) ? 2 : (type == ElementTypes::Q4 ? 4 : 0);
+		for (unsigned int e = 0; e < NUME; ++e)
+		{
+			CElement& Element = EleGrp[e];
+			fout << nodes;
+			for (unsigned int n = 0; n < nodes; ++n)
+			{
+				fout << " " << Element.GetNodes()[n]->NodeNumber - 1;
+			}
+			fout << "\n";
+		}
+	}
+
+	fout << "CELL_TYPES " << numCells << "\n";
+	for (unsigned int grp = 0; grp < NUMEG; ++grp)
+	{
+		CElementGroup& EleGrp = FEMData->GetEleGrpList()[grp];
+		unsigned int NUME = EleGrp.GetNUME();
+		ElementTypes type = EleGrp.GetElementType();
+		int ctype = (type == ElementTypes::Bar) ? 3 : (type == ElementTypes::Q4 ? 9 : 0);
+		for (unsigned int e = 0; e < NUME; ++e)
+			fout << ctype << "\n";
+	}
+
+	fout << "POINT_DATA " << NUMNP << "\n";
+	fout << "VECTORS displacement float\n";
+	for (unsigned int i = 0; i < NUMNP; i++)
+	{
+		double ux = 0, uy = 0, uz = 0;
+		if (NodeList[i].bcode[0]) ux = Displacement[NodeList[i].bcode[0] - 1];
+		if (NodeList[i].bcode[1]) uy = Displacement[NodeList[i].bcode[1] - 1];
+		if (NodeList[i].bcode[2]) uz = Displacement[NodeList[i].bcode[2] - 1];
+		fout << ux << " " << uy << " " << uz << "\n";
+	}
+
+	fout << "CELL_DATA " << numCells << "\n";
+	fout << "VECTORS stress float\n";
+	for (unsigned int grp = 0; grp < NUMEG; ++grp)
+	{
+		CElementGroup& EleGrp = FEMData->GetEleGrpList()[grp];
+		unsigned int NUME = EleGrp.GetNUME();
+		ElementTypes type = EleGrp.GetElementType();
+		for (unsigned int e = 0; e < NUME; ++e)
+		{
+			CElement& Element = EleGrp[e];
+			if (type == ElementTypes::Bar)
+			{
+				double s; Element.ElementStress(&s, Displacement);
+				fout << s << " 0 0\n";
+			}
+			else if (type == ElementTypes::Q4)
+			{
+				double s[3]; Element.ElementStress(s, Displacement);
+				fout << s[0] << " " << s[1] << " " << s[2] << "\n";
+			}
+			else
+			{
+				fout << "0 0 0\n";
+			}
+		}
+	}
+}
+
 //	Print total system data
 void COutputter::OutputTotalSystemData()
 {

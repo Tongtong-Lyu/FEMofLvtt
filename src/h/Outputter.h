@@ -13,7 +13,7 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
-
+#include <string>
 using namespace std;
 
 //! Outputer class is used to output results
@@ -67,7 +67,9 @@ void OutputQ4Elements(unsigned int EleGrp);
 //!	Output element stresses 
 	void OutputElementStress();
 
-//!	Print total system data
+	void OutputVTK(const std::string& file, unsigned int lcase);//Êä³öÎª.vtk
+	
+	//!	Print total system data
 	void OutputTotalSystemData();
 
 //! Overload the operator <<

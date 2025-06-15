@@ -102,6 +102,7 @@ int main(int argc, char *argv[])
 
 //      Calculate and output stresses of all elements
         Output->OutputElementStress();
+        Output->OutputVTK(filename + "_case" + std::to_string(lcase + 1) + ".vtk", lcase);
     }
 
     double time_solution = timer.ElapsedTime();
