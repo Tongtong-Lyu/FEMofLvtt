@@ -9,3 +9,17 @@ STAP++ is a cross-platform FEM code, which can be build on Windows, Linux and ma
 STAP++ is developed and maintained by the Computational Dynamics Laboratory (http://www.comdyn.cn/), School of Aerospace Engineering, Tsinghua University, China. Your feedbacks are welcome.
 
 The documentation of STAP++ can be found at https://xzhang66.github.io/stappp/index.html.
+## 简介
+
+本项目基于 STAP++ 项目进行修改和实现，用于学习和实践有限元方法。，本项目继承其输入文件格式和功能，并且将内容从杆单元拓展到Q4单元，同时可以生成ParaView对应的.vtk文件。
+## 目录结构
+- `src`：核心源代码，包含元素、求解器等实现。
+- `data`：示例输入文件，可用于测试程序。
+- `q4_generate`：生成四节点单元网格的工具。
+- `docs`：使用 Doxygen 生成的文档。
+
+## 构建方法
+1. 确保系统安装支持 C++11 的编译器和 CMake。
+2. 在项目根目录运行 `cmake -S src -B build` 生成构建文件。
+3. 进入 `build` 目录执行 `cmake --build .` 完成编译。
+4. 运行生成的 `stap++` 可执行文件，并按需指定输入数据文件。
