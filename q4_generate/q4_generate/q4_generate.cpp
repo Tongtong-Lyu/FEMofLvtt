@@ -8,9 +8,9 @@ using namespace std;
 
 int main()
 {
-    const int lp = 21;                    // 网格边长：21x21
-    const int nnp = lp * lp;              // 总节点数 441
-    const int nel = (lp - 1) * (lp - 1);  // 总单元数 400
+    const int lp = 101;                   // 网格边长：101x101（即100x100网格）
+    const int nnp = lp * lp;              // 总节点数 10201
+    const int nel = (lp - 1) * (lp - 1);  // 总单元数 10000
     const int ndof = 2;                   // 每节点自由度
 
     vector<double> x_coords, y_coords;
@@ -42,7 +42,7 @@ int main()
         if ((e + 1) % (lp - 1) == 0) rowcount++;
     }
 
-    // 打开输出文件（仍为原文件名）
+    // 打开输出文件
     ofstream fout("q4-example.dat");
     if (!fout) {
         cerr << "无法创建输出文件 q4-example.dat" << endl;
@@ -65,14 +65,12 @@ int main()
             << x_coords[i] << " " << y_coords[i] << " 0\n";
     }
 
-    // 写入集中载荷：右上角节点，编号为 nnp
-   // 写入集中载荷：右边一整列节点，每个分配 -1000/N
+    // 写入分布载荷：右边一整列节点，每个分配 -1000/N
     fout << "1 " << lp << "\n";  // 工况号1，lp个节点受力
 
     double total_force = -1000.0;
     double force_per_node = total_force / lp;
 
-    // 右边一列节点编号：第 i*lp + (lp-1)
     for (int j = 0; j < lp; ++j) {
         int node_id = j * lp + lp;  // 每列最后一个，即 x=2.0 的节点
         fout << node_id << " 2 " << force_per_node << "\n";
@@ -99,6 +97,7 @@ int main()
     cout << "文件已生成: q4-example.dat" << endl;
     return 0;
 }
+
 
 
 
